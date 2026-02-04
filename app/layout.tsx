@@ -5,6 +5,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SidebarCart } from "@/components/layout/sidebar-cart";
 import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const geistSans = Geist({
@@ -38,6 +39,7 @@ export default function RootLayout({
           <div className="min-h-screen flex flex-col">
             <Navbar />
             <main className="flex-1">{children}</main>
+            <Footer />
           </div>
           <SidebarCart />
         </QueryClientProvider>

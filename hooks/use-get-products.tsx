@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { ProductType } from "@/db/schema";
+import { ProductDataType } from "@/interfaces";
 
 export function useGetProducts() {
-  return useQuery<ProductType[]>({
+  return useQuery<ProductDataType[]>({
     queryKey: ["products"],
     queryFn: async () => {
-      const response = await axios.get<ProductType[]>("/api/product");
+      const response = await axios.get<ProductDataType[]>("/api/product");
       return response.data;
     },
   });

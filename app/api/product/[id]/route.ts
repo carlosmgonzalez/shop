@@ -36,10 +36,12 @@ export async function GET(
       return Response.json({ error: "Invalid product ID" }, { status: 400 });
     }
 
-    const [product] = await db
-      .select()
-      .from(productsTable)
-      .where(eq(productsTable.id, productId));
+    const product = await db.query.productsTable.findFirst({
+      where: eq(productsTable.id, productId),
+      with: {
+        images: true,
+      },
+    });
 
     if (!product) {
       return Response.json({ error: "Product not found" }, { status: 404 });

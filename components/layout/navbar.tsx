@@ -22,7 +22,7 @@ export function Navbar() {
         </div>
 
         {/* Navegación - oculta en móvil */}
-        <nav className="hidden md:flex items-center gap-6">
+        {/* <nav className="hidden md:flex items-center gap-6">
           <Link
             href="/"
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -35,7 +35,7 @@ export function Navbar() {
           >
             Productos
           </Link>
-        </nav>
+        </nav> */}
 
         {/* Botones de acción */}
         <div className="flex items-center gap-2">
@@ -55,14 +55,14 @@ export function Navbar() {
           </Button>
 
           {/* Menú móvil - opcional */}
-          <Button
+          {/* <Button
             variant="ghost"
             size="icon"
             className="md:hidden"
             aria-label="Menú"
           >
             <Menu className="h-5 w-5" />
-          </Button>
+          </Button> */}
         </div>
       </div>
     </header>
