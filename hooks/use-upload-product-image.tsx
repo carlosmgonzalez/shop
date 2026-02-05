@@ -8,7 +8,11 @@ interface UploadImageResponse {
 
 export function useUploadProductImage() {
   const queryClient = useQueryClient();
-  return useMutation<ImageProductType, Error, { productId: number; file: File }>({
+  return useMutation<
+    ImageProductType,
+    Error,
+    { productId: number; file: File }
+  >({
     mutationFn: async ({ productId, file }) => {
       const formData = new FormData();
       formData.append("file", file);
@@ -26,6 +30,9 @@ export function useUploadProductImage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+    onError: (error) => {
+      console.error("Error uploading product image:", error);
     },
   });
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetProductById } from "@/hooks";
+import { useGetProductById, useUpdateItemInCart } from "@/hooks";
 import { use } from "react";
 import Image from "next/image";
 import {
@@ -12,8 +12,10 @@ import {
 } from "@/components/ui/carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ShoppingCart } from "lucide-react";
+import { Spinner } from "@/components/ui/spinner";
+import { formatPrice } from "@/lib/utils/formatters";
+import { Separator } from "@/components/ui/separator";
 
 export default function ProductPage({
   params,
@@ -22,20 +24,20 @@ export default function ProductPage({
 }) {
   const { id } = use(params);
   const { data: product, isLoading } = useGetProductById(id);
+  const { mutate: updateItemInCart, isPending: isUpdatingItemInCart } =
+    useUpdateItemInCart();
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-16">
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="text-muted-foreground">Loading...</div>
-        </div>
+      <div className="container mx-auto p-4 h-screen flex items-center justify-center">
+        <Spinner className="size-8" />
       </div>
     );
   }
 
   if (!product) {
     return (
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto p-4">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-muted-foreground">Product not found</div>
         </div>
@@ -46,7 +48,7 @@ export default function ProductPage({
   const hasImages = product.images && product.images.length > 0;
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="container mx-auto p-4">
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
         {/* Image Carousel */}
         <div className="w-full">
@@ -78,7 +80,7 @@ export default function ProductPage({
           ) : (
             <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center">
               <div className="text-muted-foreground text-center">
-                <p className="text-lg">No image available</p>
+                <p className="text-lg">No hay imágenes disponibles</p>
               </div>
             </div>
           )}
@@ -92,52 +94,41 @@ export default function ProductPage({
             </h1>
 
             <div className="flex items-center gap-4">
-              <span className="text-3xl font-bold">${product.price}</span>
+              <span className="text-3xl font-bold">
+                {formatPrice(product.price)}
+              </span>
               <Badge
                 variant={product.stock > 0 ? "secondary" : "destructive"}
                 className="text-sm"
               >
-                {product.stock > 0
-                  ? `${product.stock} in stock`
-                  : "Out of stock"}
+                {product.stock > 0 ? `${product.stock} en stock` : "Sin stock"}
               </Badge>
             </div>
 
-            <div className="pt-4 border-t">
-              <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
-                {product.description}
-              </p>
-            </div>
-          </div>
-
-          {/* <Card>
-            <CardHeader>
-              <h2 className="text-lg font-semibold">Product Details</h2>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Price</span>
-                <span className="font-medium">${product.price}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Stock</span>
-                <span className="font-medium">{product.stock} units</span>
-              </div>
-              {product.createdAt && (
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Added</span>
-                  <span className="font-medium text-sm">
-                    {new Date(product.createdAt).toLocaleDateString()}
-                  </span>
+            <Button
+              size="lg"
+              className="w-full"
+              disabled={product.stock === 0 || isUpdatingItemInCart}
+              onClick={() =>
+                updateItemInCart({ productId: product.id, quantity: 1 })
+              }
+            >
+              {isUpdatingItemInCart ? (
+                <Spinner className="size-4" />
+              ) : (
+                <div className="flex items-center justify-center gap-2">
+                  <ShoppingCart className="size-5" />
+                  Agregar al carrito
                 </div>
               )}
-            </CardContent>
-          </Card> */}
+            </Button>
 
-          <Button size="lg" className="w-full" disabled={product.stock === 0}>
-            <ShoppingCart className="mr-2 h-5 w-5" />
-            {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
-          </Button>
+            <Separator />
+
+            <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
+              {product.description}
+            </p>
+          </div>
         </div>
       </div>
     </div>

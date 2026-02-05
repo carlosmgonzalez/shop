@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -143,169 +142,168 @@ export function UpdateProductDialog({ product }: UpdateProductDialogProps) {
           </div>
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
-        <DialogHeader>
+      <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col">
+        <DialogHeader className="shrink-0">
           <DialogTitle>Update Product</DialogTitle>
-          <DialogDescription>
-            Update the product information. All fields are optional.
-          </DialogDescription>
         </DialogHeader>
-        <form id="update-product-form" onSubmit={form.handleSubmit(onSubmit)}>
-          <FieldGroup>
-            <Controller
-              name="name"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="product-name">Name</FieldLabel>
-                  <Input
-                    {...field}
-                    id="product-name"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Product name"
-                    autoComplete="off"
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-            <Controller
-              name="price"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="product-price">Price</FieldLabel>
-                  <Input
-                    id="product-price"
-                    type="number"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="0"
-                    autoComplete="off"
-                    min={1}
-                    value={numberInputTransform.input(field.value ?? 0)}
-                    onChange={(e) =>
-                      field.onChange(numberInputTransform.output(e))
-                    }
-                    onBlur={field.onBlur}
-                    name={field.name}
-                    ref={field.ref}
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-            <Controller
-              name="description"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="product-description">
-                    Description
-                  </FieldLabel>
-                  <Textarea
-                    {...field}
-                    id="product-description"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Product description"
-                    rows={4}
-                    className="min-h-[100px] resize-none"
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-            <Controller
-              name="stock"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="product-stock">Stock</FieldLabel>
-                  <Input
-                    id="product-stock"
-                    type="number"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="0"
-                    autoComplete="off"
-                    min={0}
-                    value={numberInputTransform.input(field.value ?? 0)}
-                    onChange={(e) =>
-                      field.onChange(numberInputTransform.output(e))
-                    }
-                    onBlur={field.onBlur}
-                    name={field.name}
-                    ref={field.ref}
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-            <Field>
-              <FieldLabel htmlFor="product-image-upload">
-                Product Images
-              </FieldLabel>
-              <div className="flex items-center gap-2 mb-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  asChild
-                  disabled={isUploading}
-                >
-                  <label
-                    htmlFor="product-image-upload"
-                    className="cursor-pointer"
+        <div className="flex-1 overflow-y-auto min-h-0">
+          <form id="update-product-form" onSubmit={form.handleSubmit(onSubmit)}>
+            <FieldGroup>
+              <Controller
+                name="name"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="product-name">Name</FieldLabel>
+                    <Input
+                      {...field}
+                      id="product-name"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Product name"
+                      autoComplete="off"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="price"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="product-price">Price</FieldLabel>
+                    <Input
+                      id="product-price"
+                      type="number"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="0"
+                      autoComplete="off"
+                      min={1}
+                      value={numberInputTransform.input(field.value ?? 0)}
+                      onChange={(e) =>
+                        field.onChange(numberInputTransform.output(e))
+                      }
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      ref={field.ref}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="description"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="product-description">
+                      Description
+                    </FieldLabel>
+                    <Textarea
+                      {...field}
+                      id="product-description"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Product description"
+                      rows={4}
+                      className="min-h-[100px] resize-none"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="stock"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="product-stock">Stock</FieldLabel>
+                    <Input
+                      id="product-stock"
+                      type="number"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="0"
+                      autoComplete="off"
+                      min={0}
+                      value={numberInputTransform.input(field.value ?? 0)}
+                      onChange={(e) =>
+                        field.onChange(numberInputTransform.output(e))
+                      }
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      ref={field.ref}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Field>
+                <FieldLabel htmlFor="product-image-upload">
+                  Product Images
+                </FieldLabel>
+                <div className="flex items-center gap-2 mb-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    asChild
+                    disabled={isUploading}
                   >
-                    <Plus className="size-4" />
-                    {isUploading ? "Uploading..." : "Add Image"}
-                  </label>
-                </Button>
-                <input
-                  id="product-image-upload"
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleImageUpload}
-                  disabled={isUploading}
-                />
-              </div>
-              {product.images && product.images.length > 0 && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                  {product.images.map((image) => (
-                    <div
-                      key={image.id}
-                      className="relative aspect-square bg-muted rounded-md overflow-hidden group"
+                    <label
+                      htmlFor="product-image-upload"
+                      className="cursor-pointer"
                     >
-                      <Image
-                        src={image.url}
-                        alt={`${product.name} image`}
-                        fill
-                        className="object-cover"
-                      />
-                      <Button
-                        size="icon-xs"
-                        onClick={() => handleImageDelete(image.id)}
-                        disabled={isDeleting}
-                        className="absolute top-1 right-1 rounded-full z-10"
-                        aria-label="Delete image"
-                      >
-                        <X className="size-4" />
-                      </Button>
-                    </div>
-                  ))}
+                      <Plus className="size-4" />
+                      {isUploading ? "Uploading..." : "Add Image"}
+                    </label>
+                  </Button>
+                  <input
+                    id="product-image-upload"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleImageUpload}
+                    disabled={isUploading}
+                  />
                 </div>
-              )}
-            </Field>
-          </FieldGroup>
-        </form>
-        <DialogFooter>
+                {product.images && product.images.length > 0 && (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {product.images.map((image) => (
+                      <div
+                        key={image.id}
+                        className="relative aspect-square bg-muted rounded-md overflow-hidden group"
+                      >
+                        <Image
+                          src={image.url}
+                          alt={`${product.name} image`}
+                          fill
+                          className="object-cover"
+                        />
+                        <Button
+                          size="icon-xs"
+                          onClick={() => handleImageDelete(image.id)}
+                          disabled={isDeleting}
+                          className="absolute top-1 right-1 rounded-full z-10"
+                          aria-label="Delete image"
+                        >
+                          <X className="size-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </Field>
+            </FieldGroup>
+          </form>
+        </div>
+        <DialogFooter className="shrink-0">
           <Button
             type="button"
             variant="outline"

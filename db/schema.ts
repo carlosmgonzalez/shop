@@ -37,6 +37,10 @@ export const cartItemsTable = pgTable("cart_items", {
   cartId: integer().references(() => cartTable.id),
   productId: integer().references(() => productsTable.id),
   quantity: integer().notNull().default(1),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp()
+    .notNull()
+    .$onUpdate(() => new Date()),
 });
 
 export type InsertCartItem = typeof cartItemsTable.$inferInsert;
@@ -66,7 +70,46 @@ export const usersSessionsTable = pgTable("users_sessions", {
 export type InsertUserSession = typeof usersSessionsTable.$inferInsert;
 export type UserSessionType = typeof usersSessionsTable.$inferSelect;
 
+export const salesTable = pgTable("sales", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  productId: integer().references(() => productsTable.id),
+  quantity: integer().notNull().default(1),
+  price: integer().notNull(),
+  total: integer().notNull(),
+  userSessionId: integer().references(() => usersSessionsTable.id),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp()
+    .notNull()
+    .$onUpdate(() => new Date()),
+});
+
+export type InsertSale = typeof salesTable.$inferInsert;
+export type SaleType = typeof salesTable.$inferSelect;
+
+export const addressesTable = pgTable("addresses", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  userSessionId: integer().references(() => usersSessionsTable.id),
+  address: varchar({ length: 255 }).notNull(),
+  city: varchar({ length: 255 }).notNull(),
+  state: varchar({ length: 255 }).notNull(),
+  zip: varchar({ length: 255 }).notNull(),
+  country: varchar({ length: 255 }).notNull(),
+  phone: varchar({ length: 255 }).notNull(),
+  email: varchar({ length: 255 }).notNull(),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp()
+    .notNull()
+    .$onUpdate(() => new Date()),
+});
+
 // Relations
+export const addressesRelations = relations(addressesTable, ({ one }) => ({
+  userSession: one(usersSessionsTable, {
+    fields: [addressesTable.userSessionId],
+    references: [usersSessionsTable.id],
+  }),
+}));
+
 export const productsRelations = relations(productsTable, ({ many }) => ({
   images: many(imagesProductsTable),
   cartItems: many(cartItemsTable),
@@ -101,9 +144,18 @@ export const cartRelations = relations(cartTable, ({ one, many }) => ({
   items: many(cartItemsTable),
 }));
 
+export const salesRelations = relations(salesTable, ({ one }) => ({
+  product: one(productsTable, {
+    fields: [salesTable.productId],
+    references: [productsTable.id],
+  }),
+}));
+
 export const usersSessionsRelations = relations(
   usersSessionsTable,
   ({ many }) => ({
     carts: many(cartTable),
+    sales: many(salesTable),
+    addresses: many(addressesTable),
   })
 );

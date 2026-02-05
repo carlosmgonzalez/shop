@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -17,7 +16,6 @@ import {
 } from "@/components/ui/dialog";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -80,125 +78,112 @@ export function NewProductDialog() {
       <DialogTrigger asChild>
         <Button>Create Product</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
-        <DialogHeader>
+      <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col">
+        <DialogHeader className="shrink-0">
           <DialogTitle>Create New Product</DialogTitle>
-          <DialogDescription>
-            Add a new product to your store. Fill in all the required fields.
-          </DialogDescription>
         </DialogHeader>
-        <form id="create-product-form" onSubmit={form.handleSubmit(onSubmit)}>
-          <FieldGroup>
-            <Controller
-              name="name"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="product-name">Name</FieldLabel>
-                  <Input
-                    {...field}
-                    id="product-name"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Product name"
-                    autoComplete="off"
-                  />
-                  <FieldDescription>
-                    Enter the product name (max 255 characters).
-                  </FieldDescription>
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-            <Controller
-              name="price"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="product-price">Price</FieldLabel>
-                  <Input
-                    id="product-price"
-                    type="number"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="0"
-                    autoComplete="off"
-                    min={1}
-                    value={numberInputTransform.input(field.value)}
-                    onChange={(e) =>
-                      field.onChange(numberInputTransform.output(e))
-                    }
-                    onBlur={field.onBlur}
-                    name={field.name}
-                    ref={field.ref}
-                  />
-                  <FieldDescription>
-                    Enter the product price as a positive integer.
-                  </FieldDescription>
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-            <Controller
-              name="description"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="product-description">
-                    Description
-                  </FieldLabel>
-                  <Textarea
-                    {...field}
-                    id="product-description"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Product description"
-                    rows={4}
-                    className="min-h-[100px] resize-none"
-                  />
-                  <FieldDescription>
-                    Provide a detailed description of the product.
-                  </FieldDescription>
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-            <Controller
-              name="stock"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="product-stock">Stock</FieldLabel>
-                  <Input
-                    id="product-stock"
-                    type="number"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="0"
-                    autoComplete="off"
-                    min={0}
-                    value={numberInputTransform.input(field.value)}
-                    onChange={(e) =>
-                      field.onChange(numberInputTransform.output(e))
-                    }
-                    onBlur={field.onBlur}
-                    name={field.name}
-                    ref={field.ref}
-                  />
-                  <FieldDescription>
-                    Enter the available stock quantity.
-                  </FieldDescription>
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </FieldGroup>
-        </form>
-        <DialogFooter>
+        <div className="flex-1 overflow-y-auto min-h-0">
+          <form id="create-product-form" onSubmit={form.handleSubmit(onSubmit)}>
+            <FieldGroup>
+              <Controller
+                name="name"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="product-name">Name</FieldLabel>
+                    <Input
+                      {...field}
+                      id="product-name"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Product name"
+                      autoComplete="off"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="price"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="product-price">Price</FieldLabel>
+                    <Input
+                      id="product-price"
+                      type="number"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="0"
+                      autoComplete="off"
+                      min={1}
+                      value={numberInputTransform.input(field.value)}
+                      onChange={(e) =>
+                        field.onChange(numberInputTransform.output(e))
+                      }
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      ref={field.ref}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="description"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="product-description">
+                      Description
+                    </FieldLabel>
+                    <Textarea
+                      {...field}
+                      id="product-description"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Product description"
+                      rows={4}
+                      className="min-h-[100px] resize-none"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="stock"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="product-stock">Stock</FieldLabel>
+                    <Input
+                      id="product-stock"
+                      type="number"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="0"
+                      autoComplete="off"
+                      min={0}
+                      value={numberInputTransform.input(field.value)}
+                      onChange={(e) =>
+                        field.onChange(numberInputTransform.output(e))
+                      }
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      ref={field.ref}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </FieldGroup>
+          </form>
+        </div>
+        <DialogFooter className="shrink-0">
           <Button
             type="button"
             variant="outline"

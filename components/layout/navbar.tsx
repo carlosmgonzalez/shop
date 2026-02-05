@@ -1,12 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingCart, Menu } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/lib/store";
+import { useGetCart } from "@/hooks/use-get-cart";
+import { Badge } from "../ui/badge";
+import { useMemo } from "react";
+import Image from "next/image";
 
 export function Navbar() {
   const { toggleCart } = useCartStore();
+  const { data: cart } = useGetCart();
+
+  const totalItems = useMemo(() => {
+    return cart?.items.reduce((acc, item) => acc + item.quantity, 0) || 0;
+  }, [cart]);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
@@ -17,25 +26,14 @@ export function Navbar() {
             href="/"
             className="flex items-center gap-2 font-semibold text-lg hover:opacity-80 transition-opacity"
           >
-            <span className="text-primary">Shop</span>
+            <Image
+              src="https://res.cloudinary.com/difikt7so/image/upload/v1770330577/products/zvkva0rgpnrrp2rfynsw.png"
+              alt="Logo"
+              width={160}
+              height={160}
+            />
           </Link>
         </div>
-
-        {/* Navegación - oculta en móvil */}
-        {/* <nav className="hidden md:flex items-center gap-6">
-          <Link
-            href="/"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Inicio
-          </Link>
-          <Link
-            href="/products"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Productos
-          </Link>
-        </nav> */}
 
         {/* Botones de acción */}
         <div className="flex items-center gap-2">
@@ -47,11 +45,16 @@ export function Navbar() {
             className="relative"
             aria-label="Abrir carrito"
           >
-            <ShoppingCart className="h-5 w-5" />
+            <ShoppingCart className="size-5" />
             {/* Badge del carrito - puedes agregar el número de items aquí */}
-            {/* <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center">
-              0
-            </span> */}
+            {totalItems > 0 && (
+              <Badge
+                variant="default"
+                className="text-xs absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center"
+              >
+                {totalItems}
+              </Badge>
+            )}
           </Button>
 
           {/* Menú móvil - opcional */}

@@ -11,9 +11,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
+import { useUpdateItemInCart } from "@/hooks";
+import { Spinner } from "./ui/spinner";
+import { formatPrice } from "@/lib/utils/formatters";
 
 export function ProductCard({ product }: { product: ProductDataType }) {
   const router = useRouter();
+  const { mutate: updateItemInCart, isPending: isUpdatingItemInCart } =
+    useUpdateItemInCart();
 
   return (
     <Card className="group relative mx-auto w-full max-w-sm overflow-hidden pt-0 transition-shadow hover:shadow-lg">
@@ -47,11 +52,25 @@ export function ProductCard({ product }: { product: ProductDataType }) {
           <Badge variant="secondary" className="text-xs">
             {product.stock} in stock
           </Badge>
-          <p className="text-sm text-muted-foreground">${product.price}</p>
+          <p className="text-sm text-muted-foreground">
+            {formatPrice(product.price)}
+          </p>
         </div>
       </CardContent>
       <CardFooter className="px-2 py-0">
-        <Button className="w-full">Add to cart</Button>
+        <Button
+          className="w-full"
+          disabled={isUpdatingItemInCart}
+          onClick={() =>
+            updateItemInCart({ productId: product.id, quantity: 1 })
+          }
+        >
+          {isUpdatingItemInCart ? (
+            <Spinner className="size-4" />
+          ) : (
+            "Agregar al carrito"
+          )}
+        </Button>
       </CardFooter>
     </Card>
   );
